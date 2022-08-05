@@ -1,4 +1,4 @@
-<div align="center"><b>[ bpgame - 一个能在web bilibili上运行的简单游戏扩展 ]</b></div>  
+<div align="center"><b>[ bpgame  一个在web bilibili上运行的简单游戏扩展 ]</b></div>  
 
 # 项目介绍  
 

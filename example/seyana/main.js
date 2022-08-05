@@ -114,8 +114,8 @@ class TapInfo{
         this.window2.clear();
         let accu = ( (this.perfect + 0.6 * this.great) / this.all ).toFixed(4) * 100;
         let accus = accu.toString() + "%";
-        this.window2.setStyle({font: "40px bold fantasy", fillStyle: "#ffffff"});
-        this.window2.draw_font(accus, 0.5, 0.5);
+        this.window2.setStyle({font: "30px bold fantasy", fillStyle: "#ffffff"});
+        this.window2.draw_font(accus, 0.5, 0.8);
         return accu;
     }
     draw2(){
@@ -415,6 +415,7 @@ class reader{
 
 var acc = null;
 var end = null;
+var phase2 = false;
 
 function FSM(nreader, blb, glb){
     if(bplayer.now_time() > Bvideo.time2second("3:19")){
@@ -457,18 +458,30 @@ function FSM(nreader, blb, glb){
     if(bplayer.now_time() >= Bvideo.time2second("2:36")){
         if(acc === null){
             bplayer.jump_at(Bvideo.time2second("2:40"));
-            nreader.clear();
             blb.clear();
             glb.clear();
             acc = nreader.info.accuracy();
         }
         return;
     }
+    if(bplayer.now_time() >= Bvideo.time2second("2:35")){
+        nreader.clear();
+    }
     nreader.read();
     var result = nreader.opt();
     nreader.draw2();
-    var r_delta = 1 / (2 * nreader.info.rall);
-    blb.health -= r_delta * result[0];
+    if(bplayer.now_time() <= Bvideo.time2second("1:23")){
+        var r_delta = 1 / (2 * 220);
+        blb.health -= r_delta * result[0];
+    }
+    else{
+        if(!phase2){
+            blb.health = 1.0;
+            phase2 = true;
+        }
+        var r_delta = 1 / (2 * (nreader.info.rall - 220));
+        blb.health -= r_delta * result[0];
+    }
     var b_delta = 1 / (2 * nreader.info.ball);
     glb.health -= b_delta * result[1];
     blb.draw2();
