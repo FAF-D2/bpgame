@@ -177,21 +177,6 @@ function deltatime(){
 function bupdate(handler){
     if(typeof(handler) != "function")
         return false;
-    // try{
-    //     let id = window.requestAnimationFrame((timestamp) => {
-    //         if(!previous_time)
-    //             previous_time = timestamp;
-    //         delta = timestamp - previous_time;
-    //         console.log(delta);
-    //         handler(); 
-    //     });
-    //     frame_handler.push(id);
-    //     return true;
-    // }
-    // catch(err){
-    //     console.log(err);
-    //     return false
-    // }
     try{
         let timer = setInterval(handler, deltatime());
         frame_handler.push(timer);

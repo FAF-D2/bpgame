@@ -1,12 +1,15 @@
+# this is a simple example code to compile your game project
 import json
 import os
 
-path = './Assests/boss'
-dir_name = 'boss'
-out_path = './Assests/boss/info.json'
+EXTS = ['js']
 
-version = '1.0.0'
-name = "muc"
+dir_name = 'seyana'
+path = f'global/Assests/{dir_name}'
+out_path = f'global/Assests/{dir_name}/info.json'
+
+version = '0.1'
+name = "seyana"
 
 
 if __name__ == '__main__':
@@ -15,7 +18,8 @@ if __name__ == '__main__':
         for file in files:
             if file == 'info.json':
                 continue
-            res.append(os.path.join('global/Assests', dir_name, file))
+            if file.split('.')[-1] in EXTS:
+                res.append(os.path.join(root, file))
     print(res)
     info = dict(version=version, name=name, struct=res)
     print(info)
