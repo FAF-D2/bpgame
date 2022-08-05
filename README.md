@@ -28,7 +28,7 @@
 - 下载该扩展文件夹
 - 在Chrome扩展（浏览器右上角中）勾选开发者模式
 - 选择<加载已解压的扩展程序>，选择下载的扩展文件夹, 安装完毕！
-- 更详细的图文教程可参照 -> [安装bpgame扩展](https://www.bilibili.com/)  
+- 更详细的图文教程可参照 -> [安装bpgame扩展](https://www.bilibili.com/read/cv17949898)  
 
 #### 安装游戏
 - 游戏均要放在本地**global/Assests**文件夹下（新安装的扩展内置seyana游戏，可在<https://www.bilibili.com/video/BV1BG411h7NV>进行测试）
