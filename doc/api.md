@@ -1,8 +1,10 @@
 # API文档
 ### 目前所有的api代码都放在 global/Assests/bplus_api.js 下
 ---
-## 视频操作
-使用全局变量**bplayer(Bvideo类)**对视频进行操作  
+## 视频操作  
+
+使用全局变量 **bplayer(Bvideo类)** 对视频进行操作  
+
 ```
 bplayer.jump_at(t)	  // 跳转到第t秒
 
@@ -78,10 +80,10 @@ bupdate(handler);	// 将一个handler函数绑定，每一帧进行调用
 文件IO尚未完善与测试，请尽量只调用下面示例的load函数加载本地资源
 ```
 let req = {location: "local", data: "seyana/img/note/red.png"};
-var url = load(req); // 这样会返回文件的扩展url
+var url = load(req);    // 这样会返回文件的扩展url
 var img = create_img(url);
 
-//或是直接
+// 或是直接
 var img = load(req, (url) => create_img(url));
 
 // load(url, handler)， 在handler不为false时，会使用handler处理返回的数据并返回handler的值
