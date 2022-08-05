@@ -1,0 +1,32 @@
+{
+    "manifest_version": 3,
+    "name" : "bpg",
+    "author" : "_D2",
+    "version" : "0.1.0",
+    "description" : "try try",
+    "icons" : {
+        "64" : "icon.png"
+    },
+    "permissions" : ["storage", "activeTab", "scripting", "tabs"],
+    "background":{
+        "service_worker": "global/backend.js"
+    },
+    "action":{
+        "default_title": "enjoy the game!",
+        "default_icon" : "icon.png",
+        "default_popup" : "popup.html"
+    },
+    "content_scripts":[
+        {
+            "matches": ["https://www.bilibili.com/video/*"],
+            "js": ["js/bplus_listener.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "web_accessible_resources":[
+        {
+            "matches": ["<all_urls>"],
+            "resources" : ["global/Assests/*"]
+        }
+    ]
+}
