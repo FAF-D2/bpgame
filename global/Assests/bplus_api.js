@@ -5,15 +5,16 @@ const fps = 40;
 var start = false;
 var bmain = null;
 var bquit = bclear;
+var frame_timer = null;
 var frame_handler = new Array();
 var previous_time = null;
 var delta = 0;
 
 function bclear(){
-    console.log("bclear");
+    clearInterval(frame_timer);
+    frame_timer = null;
     while(frame_handler.length > 0){
        clearInterval(frame_handler.pop());
-       // cancelAnimationFrame(frame_handler.pop());
     }
     if(container){
         container.parentNode.removeChild(container);
@@ -189,7 +190,8 @@ function bupdate(handler){
 }
 
 function start_key_listener(){
-    frame_timer = setInterval(frame_clear, deltatime());
+    if(!frame_timer)
+        frame_timer = setInterval(frame_clear, deltatime());
 }
 
 class Bvideo{
@@ -489,6 +491,7 @@ function create_button(onclick=null, appendToContainter=true, zIndex=1, attribut
         container.appendChild(button);
     return button;
 }
+
 //curve
 function* linear(f0, f1, duration){
     var current = f0;

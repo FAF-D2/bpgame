@@ -1,9 +1,9 @@
 {
     "manifest_version": 3,
-    "name" : "bpg",
+    "name" : "bpgame",
     "author" : "_D2",
     "version" : "0.1.0",
-    "description" : "try try",
+    "description" : "bpgame",
     "icons" : {
         "64" : "icon.png"
     },
