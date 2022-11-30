@@ -64,7 +64,7 @@ function reload(tabID, changeInfo, tabInfo){
             console.log(tabInfo);
             currentBvid = tabInfo.url.substring(31, 43);
             let reloading = chrome.tabs.reload(tabID);
-            reloading.then(null, (err) => console.log(err));
+            reloading.then(()=>{console.log("reload")}, (err) => console.log(err));
         }
     }
 }
