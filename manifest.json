@@ -7,26 +7,29 @@
     "icons" : {
         "64" : "icon.png"
     },
-    "permissions" : ["storage", "activeTab", "scripting", "tabs"],
+    "permissions" : ["storage", "activeTab", "scripting", "tabs", "nativeMessaging"],
     "background":{
-        "service_worker": "scripts/backend.js"
+        "service_worker": "Assets/background.js"
     },
     "action":{
         "default_title": "enjoy the game!",
         "default_icon" : "icon.png",
-        "default_popup" : "popup.html"
+        "default_popup": "popup.html"
+    },
+    "sandbox":{
+        "pages":["Assets/games/*/index.html"]
     },
     "content_scripts":[
         {
             "matches": ["https://www.bilibili.com/video/*"],
-            "js": ["scripts/bplistener.js"],
+            "js": ["Assets/bplistener.js"],
             "run_at": "document_end"
         }
     ],
     "web_accessible_resources":[
         {
             "matches": ["<all_urls>"],
-            "resources" : ["scripts/Assests/*"]
+            "resources" : ["Assets/games/*"]
         }
     ]
 }
