@@ -1,32 +1,35 @@
 {
     "manifest_version": 3,
-    "name" : "bpgame",
+    "name" : "bpgame_0.2",
     "author" : "_D2",
-    "version" : "0.1.0",
-    "description" : "bpgame",
+    "version" : "0.2.0",
+    "description" : "bpgame_0.2",
     "icons" : {
         "64" : "icon.png"
     },
-    "permissions" : ["storage", "activeTab", "scripting", "tabs"],
+    "permissions" : ["storage", "activeTab", "scripting", "tabs", "nativeMessaging"],
     "background":{
-        "service_worker": "global/backend.js"
+        "service_worker": "Assets/background.js"
     },
     "action":{
         "default_title": "enjoy the game!",
         "default_icon" : "icon.png",
-        "default_popup" : "popup.html"
+        "default_popup": "popup.html"
+    },
+    "sandbox":{
+        "pages":["Assets/games/*/index.html"]
     },
     "content_scripts":[
         {
             "matches": ["https://www.bilibili.com/video/*"],
-            "js": ["js/bplus_listener.js"],
+            "js": ["Assets/bplistener.js"],
             "run_at": "document_end"
         }
     ],
     "web_accessible_resources":[
         {
             "matches": ["<all_urls>"],
-            "resources" : ["global/Assests/*"]
+            "resources" : ["Assets/games/*"]
         }
     ]
 }
