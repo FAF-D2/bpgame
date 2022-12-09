@@ -1,0 +1,7 @@
+{
+     "name": "com.bpgame.bpwebsocket",
+     "description": "manage the local game file",
+     "type": "stdio",
+     "allowed_origins": ["chrome-extension://bniedpojpfkimbohohnipnkejmgehken/"],
+     "path": "C:\\Users\\86137\\Desktop\\vscode\\bpg\\ws\\bpws.exe"
+}
