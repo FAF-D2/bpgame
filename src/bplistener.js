@@ -112,7 +112,7 @@ function _GameIndexInit(index){
     _GameIndex.style.overflow = "hidden";
     _GameIndex.style.border = "none";
     _GameIndex.style.zIndex = 2000000000;
-    _GameIndex.allow = "autoplay";
+    _GameIndex.allow = "autoplay;";
     _GameIndex.style.lineHeight = 0;
     _GameIndex.src = index;
 }
@@ -240,7 +240,7 @@ function _total(){
     return bplayer.total();
 }
 function _play(){
-    bplayer.play();
+    return bplayer.play();
 }
 function _pause(){
     return bplayer.pause();
@@ -306,7 +306,13 @@ function _index_receiver(e){
             if(e.data.pipeID){
                 res.pipeID = e.data.pipeID;
             }
-            _GameIndex.contentWindow.postMessage(res, "*");
+            try{
+                _GameIndex.contentWindow.postMessage(res, "*");
+            }
+            catch(err){
+                console.log(err);
+                console.log(e.data, res);
+            }
         }
     }
 }
