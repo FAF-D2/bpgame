@@ -45,6 +45,7 @@ function _postMessage(req, _promise=true){
                 window.removeEventListener("message", _communication_handler[id]);
                 _communication_pipeline.push(id);
                 _communication_handler[id] = null;
+                console.log(req);
                 reject(new Error(`${id}: post time out`));
             }, 500);
             window.addEventListener("message", _communication_handler[id]);
@@ -61,7 +62,12 @@ const screenWidth = window.innerWidth;
 const screenHeight = window.innerHeight;
 
 function exit(){
-    Promise.all(_EXIT_FUNC).then(()=>{
+    let promises = new Array();
+    for(let i=0; i < _EXIT_FUNC.length; i++){
+        promises.push(_EXIT_FUNC[i]());
+    }
+    console.log(promises);
+    Promise.all(promises).then(()=>{
         _postMessage({opt: "exit", data: null}, false);
     });
 }
@@ -81,7 +87,7 @@ function addExitFunc(func){
     if(typeof(func) != "function"){
         return;
     }
-    _EXIT_FUNC.push(new Promise(func));
+    _EXIT_FUNC.push(func);
 }
 
 function addFlushFunc(func){
@@ -178,20 +184,6 @@ class _BPController{
         });
         _BPController.#_RENDERER_ID = requestAnimationFrame(_BPController.#_BPMAIN);
     }
-    // static #_GAME_START(e){
-    //     if(e.source != parent.window){
-    //         return;
-    //     }
-    //     if(e.data == "start"){
-    //         _BPController.#_RENDERER_ID = requestAnimationFrame(_BPController.#_BPMAIN);
-    //     }
-    //     else if(e.data == "exit"){
-    //         exit();
-    //     }
-    // }
-    // static _INIT(){
-    //     window.addEventListener("message", _BPController.#_GAME_START);
-    // }
     static get runtime(){
         return _BPController.#_RUN_TIME;
     }
@@ -206,41 +198,3 @@ window.onload = function(){
         _BPController._GAME_START();
     });
 }
-
-// function _GAME_START(e){
-//     if(e.source != parent.window){
-//         return;
-//     }
-//     if(e.data == "start"){
-//         window.removeEventListener("message", _GAME_START);
-//         _RENDERER_ID = requestAnimationFrame(_BPMAIN);
-//     }
-// }
-
-// let _RUN_TIME = null;
-// let _RENDERER_ID = null;
-// function _BPMAIN(timestamp){
-//     let delta = 0;
-//     if(!_DELTA_TIME){
-//         _RUN_TIME = timestamp;
-//         delta = timestamp;
-//     }
-//     else{
-//         delta = timestamp - _RUN_TIME;
-//         _RUN_TIME = timestamp;
-//     }
-//     GameObject._PIPELINE_RENDER();
-//     _FLUSH();
-//     _RENDERER_ID = requestAnimationFrame(_BPMAIN);
-// }
-
-
-// function _GAME_START(e){
-//     if(e.source != parent.window){
-//         return;
-//     }
-//     if(e.data == "start"){
-//         window.removeEventListener("message", _GAME_START);
-//         _RENDERER_ID = requestAnimationFrame(_BPMAIN);
-//     }
-// }
