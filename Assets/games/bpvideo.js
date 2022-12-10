@@ -34,8 +34,8 @@ class Bvideo{
     }
 
     // get promise -> if fullscreen
-    static fullscreen(handler=null){
-        return Bvideo.#message({opt: "fullscreen", data: null}, handler);
+    static fullscreen(on=true, handler=null){
+        return Bvideo.#message({opt: "fullscreen", data: on}, handler);
     }
 
     // get promise -> if danmaku {on}

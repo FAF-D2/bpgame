@@ -9,12 +9,12 @@ class BpFileController
             this.busy = false;
             this.handler = null;
             this.ws = new WebSocket(`ws://localhost:${port}`);
-            this.ws.onmessage = (e)=>{
+            this.ws.onmessage = function(e){
                 this.busy = false;
                 let code = e.data.charAt(e.data.length - 1) - '0';
-                console.log(this.handler);
                 if(this.handler){
                     this.handler(code);
+                    this.handler = null;
                 }
             }
         };
@@ -32,7 +32,7 @@ class BpFileController
                 }
                 return;
             }
-            else if(!this.connect){
+            else if(!this.connect()){
                 if(this.handler){
                     this.handler(-1);
                 }
@@ -102,7 +102,7 @@ class BpFileController
         });
         for(let i = 0; i <  BpFileController.#workers.length; i++){
             if(! BpFileController.#workers[i].busy){
-                return BpFileController.#workers[i];
+                return  BpFileController.#workers[i];
             }
         }
         BpFileController.#workers.push(

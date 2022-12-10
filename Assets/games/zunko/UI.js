@@ -115,6 +115,9 @@ class Confirm{
     set onno(func){
         this.no.onclick = func;
     }
+    set disabled(value){
+        this.grid.interactiveChildren = !value;
+    }
 }
 
 class SavingBlock{

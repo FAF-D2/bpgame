@@ -86,7 +86,7 @@ let _start = false;
 function _cmdlistener(e){
     let key = e.key.toLowerCase();
     if(!_start && key == "enter"){
-        bplayer.fullscreen();
+        bplayer.fullscreen(true);
         selector("state", (state)=>{state.style.visibility = "hidden";});
         selector("toast", (toast)=>{toast.style.visibility = "hidden";});
         selector("control", (control)=>{control.style.visibility= "hidden";});
@@ -205,12 +205,19 @@ class Bvideo{
         this.IsPaused = this.video.paused;
         return this.IsPaused;
     }
-    fullscreen(){
+    fullscreen(on){
         if(!this.fullscreen_btn){
             this._init();
         }
-        this.fullscreen_btn.click();
         this.IsFullScreen = (this.video.clientWidth >= window.clientWidth);
+        if(on && !this.IsFullScreen){
+            this.fullscreen_btn.click();
+            return on;
+        }
+        else if(!on && this.IsFullScreen){
+            this.fullscreen_btn.click();
+            return on;
+        }
         return this.IsFullScreen;
     }
     danmaku(on){
@@ -245,8 +252,8 @@ function _play(){
 function _pause(){
     return bplayer.pause();
 }
-function _fullscreen(){
-    return bplayer.fullscreen();
+function _fullscreen(on){
+    return bplayer.fullscreen(on);
 }
 function _danmaku(on){
     return bplayer.danmaku(on);

@@ -144,8 +144,7 @@ class BPTextPlayer{
     #line;
     #mask_width;
     #style;
-    #current_lines;
-    #current_width;
+    #total_lines;
     #lineHeight;
     /**
      * 用于播放文本
@@ -163,8 +162,8 @@ class BPTextPlayer{
         textStyle.wordWrapWidth = this.width;
         this.#style = new PIXI.TextStyle(textStyle);
         this.#lineHeight = lineHeight;
-        this.#current_lines = 0;
-        this.#current_width = 0;
+        this.#total_lines = Math.floor(this.height / this.#lineHeight);
+
         // mask component playing text
         this.#mask = new PIXI.Graphics();
         this.#mask.lineStyle(0);
@@ -183,22 +182,23 @@ class BPTextPlayer{
     }
     set lineHeight(height){
         this.#lineHeight = height;
+        this.#total_lines = Math.floor(this.height / this.#lineHeight);
     }
     get lineHeight(){
         return this.#lineHeight;
     }
-    display(text, style=null){
-        this.text = text;
-        let t = new PIXI.Text(text, style ? style : this.#style);
+    display(text, filter_func=null){
         if(this.layer.children.length == 2){
             this.layer.removeChildAt(1).destroy();
         }
-        this.#mask.clear();
+        this.text = text;
+        let t = new PIXI.Text(text, this.#style);
+        if(filter_func){
+            t.filters = filter_func(t.texture);
+        }
         this.layer.addChild(t);
         this.#mask_width = 0;
         this.#line = 0;
-        this.#current_lines = Math.floor(this.lineHeight * text.length / this.width);
-        this.#current_width = this.lineHeight * text.length;
         this.isFinish = false;
     }
     finish(){
@@ -211,22 +211,14 @@ class BPTextPlayer{
         this.isFinish = true;
     }
     update(delta){
-        if(this.isFinish){
+        if(this.#line > this.#total_lines){
+            this.isFinish = true;
             return true;
-        }
-        if(this.#line >= this.#current_lines){
-            let w1 = this.#line * this.width + this.#mask_width;
-            let w2 = this.#current_lines * this.width + this.#current_width;
-            if(w1 > w2){
-                this.finish();
-                return true;
-            }
         }
         if(this.#mask_width >= this.width){
             this.#mask_width = 0;
             this.#line += 1;
         }
-        // this.#mask_width += this.speed * delta * this.lineHeight * 50;
         this.#mask_width += this.speed * delta * this.lineHeight * 50;
         this.#mask.clear();
         this.#mask.beginFill(0x000000, 1.0);

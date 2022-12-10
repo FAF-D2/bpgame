@@ -86,7 +86,7 @@ class GlobalHandler extends GameObject{
                 }
                 this.stream.next();
             }
-            this.stream.update(delta*3);
+            this.stream.update(delta*2);
         }
         else if(GlobalHandler.auto){
             if(this.stream.dialog.finished){
@@ -291,6 +291,7 @@ function ButtonsInit(){
     buttons.exit.onclick = ()=>{
         GlobalHandler.stop = true;
         app.stage.addChild(exit_confirm.grid);
+        let animator = new Show3(exit_confirm);
         buttons.disabled = true;
         if(!SettingInterface.muted){
             button_click.currentTime = 0.0;
@@ -309,7 +310,7 @@ function ConfirmInit(){
         buttons.disabled = true;
         begin.disabled = false;
         begin.grid.alpha = 1.0;
-        BGMHandler.change(null);
+        BGMHandler.change(mori);
         bplayer.jump(0.5);
         bplayer.pause();
         if(!SettingInterface.muted){
@@ -365,6 +366,7 @@ function SavingInit(){
                     button_click.play();
                 }
                 app.stage.addChild(load_confirm.grid);
+                let animator = new Show3(load_confirm);
                 if(GlobalHandler.stop){
                     // begin interface
                     load_confirm.onyes = ()=>{
@@ -402,6 +404,7 @@ function SavingInit(){
                 }
                 saving.disabled = true;
                 app.stage.addChild(save_confirm.grid);
+                let animator = new Show3(save_confirm);
                 save_confirm.onyes = ()=>{
                     let status = handler.status;
                     status.then((status)=>{
@@ -446,8 +449,9 @@ function BeginInit(){
         BGMHandler.change(normal);
         begin.disabled = true;
         begin.grid.alpha = 0.0;
-        dialog.grid.scale.y = 1.0;
-        buttons.grid.scale.y = 1.0;
+        dialog.grid.scale.y = 0.0;
+        buttons.grid.scale.y = 0.0;
+        let animator = new Show2(dialog, buttons);
         buttons.disabled = false;
         reset();
         handler.stream.next();
@@ -496,7 +500,6 @@ function FuncInit(resolve, reject){
         addExitFunc(()=>{
             return new Promise((resolve)=>{
                 bpfile.write("/text/script.json", _S(handler.stream.script), 'w', ()=>{
-                    console.log("saved done");
                     resolve(null);
                 });
             });

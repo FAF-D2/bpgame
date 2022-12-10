@@ -67,6 +67,7 @@ class Hide extends Animator{
 // Show and Hide for dialog with buttons
 class Show2 extends Animator{
     constructor(dialog, buttons){
+        super(0.2);
         this.dialog = dialog;
         this.buttons = buttons;
     }
@@ -89,6 +90,7 @@ class Show2 extends Animator{
 
 class Hide2 extends Animator{
     constructor(dialog, buttons){
+        super(0.2);
         this.dialog = dialog;
         this.buttons = buttons;
         this.buttons.disabled = true;
@@ -103,6 +105,31 @@ class Hide2 extends Animator{
         }
         this.dialog.grid.scale.y -= d;
         this.buttons.grid.scale.y -= d;
+    }
+    destroy(){
+        super._destroy();
+    }
+}
+
+class Show3 extends Animator{
+    constructor(confirm){
+        super(0.2);
+        this.confirm = confirm;
+        this.confirm.grid.alpha = 0.0;
+        this.confirm.grid.y = app.screen.height / 2  - 20;
+        this.confirm.disabled = true;
+    }
+    update(delta){
+        let d = super.update(delta);
+        if(d <= 0){
+            this.confirm.grid.y = app.screen.height / 2;
+            this.confirm.grid.alpha = 1.0;
+            this.confirm.disabled = false;
+            this.destroy();
+            return;
+        }
+        this.confirm.grid.y += 20 * d;
+        this.confirm.grid.alpha += d;
     }
     destroy(){
         super._destroy();
