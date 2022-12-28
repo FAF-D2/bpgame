@@ -99,6 +99,9 @@ function _cmdlistener(e){
         });
         _start = true;
     }
+    if(_start){
+        e.stopPropagation();
+    }
 }
 
 function _GameIndexInit(index){
@@ -127,7 +130,7 @@ function _GameExit(){
     });
     _start = false;
     _ws_init = false;
-    if(_GameIndex){
+    if(_GameIndex.parentNode){
         _GameIndex.parentNode.removeChild(_GameIndex);
     }
 }
@@ -209,7 +212,7 @@ class Bvideo{
         if(!this.fullscreen_btn){
             this._init();
         }
-        this.IsFullScreen = (this.video.clientWidth >= window.clientWidth);
+        this.IsFullScreen = (this.video.clientWidth >= window.innerWidth);
         if(on && !this.IsFullScreen){
             this.fullscreen_btn.click();
             return on;
@@ -336,12 +339,10 @@ function _refresh(){
         }
         else{
             current_bvid = bvid;
-            window.removeEventListener("keydown", _cmdlistener, true);
         }
     }
     else{
         current_bvid = document.location.href.substring(31, 43);
-        window.removeEventListener("keydown", _cmdlistener, true);
     }
     if(_GameIndex && _start){
         _GameIndex.contentWindow.postMessage("exit", "*");

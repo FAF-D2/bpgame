@@ -12,7 +12,6 @@ class BpFileController
             this.ws.onmessage = (e)=>{
                 this.busy = false;
                 let code = e.data.charAt(e.data.length - 1) - '0';
-                console.log(this.handler);
                 if(this.handler){
                     this.handler(code);
                 }

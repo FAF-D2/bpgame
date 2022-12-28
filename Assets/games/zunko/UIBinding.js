@@ -35,6 +35,22 @@ class TextStream{
         if(opt == 1){
             this.pfn += 1;
             processfn[this.pfn]();
+            this.dialog.display(this.cur_name, this.cur_text);
+            return;
+        }
+        else if(opt == 2){
+            GlobalHandler.stop = true;
+            this.pfn += 1;
+            processfn[this.pfn]();
+            // this.dialog.display(" ", " ");
+            return;
+        }
+        else if(opt == 3){
+            GlobalHandler.stop = false;
+            this.pfn += 1;
+            processfn[this.pfn]();
+            // this.dialog.display(" ", " ");
+            return;
         }
         this.dialog.display(this.cur_name, this.cur_text);
     }
@@ -68,11 +84,10 @@ class GlobalHandler extends GameObject{
             this.stream.click();
         })
         this.stream = new TextStream(script, dialog);
-        this.ctrl_interval = 200 // 200 ms;
         this.auto_interval = 1000; // 1s
         this.stream.onstop = ()=>{
-            alert("done");
-            exit();
+            // alert("done");
+            bplayer.fullscreen(false).then(exit);
         }
     }
     update(delta){
@@ -87,6 +102,40 @@ class GlobalHandler extends GameObject{
                 this.stream.next();
             }
             this.stream.update(delta*2);
+        }
+        else if(getkeydown(keycode[' '])){
+            if(GlobalHandler.stop || GlobalHandler.auto || GlobalHandler.ctrl){
+                return;
+            }
+            this.stream.click();
+        }
+        else if(getkeydown(keycode.a)){
+            this.timer = 0;
+            GlobalHandler.auto = !GlobalHandler.auto;
+            let muted = SettingInterface.muted;
+            if(buttons.auto.clicked){
+                buttons.auto.clicked = false;
+                buttons.auto.button.alpha = 0.4;
+                buttons.auto.onenter = ()=>{
+                    if(!muted){
+                        select.play();
+                    }
+                    buttons.auto.button.alpha = 0.8;
+                }
+                buttons.auto.onleave = ()=>{
+                    buttons.auto.button.alpha = 0.4;
+                }
+            }
+            else{
+                buttons.auto.clicked = true;
+                buttons.auto.button.alpha = 0.8;
+                buttons.auto.onenter = null;
+                buttons.auto.onleave = null;
+            }
+            if(!muted){
+                button_click.currentTime = 0.0;
+                button_click.play();
+            }
         }
         else if(GlobalHandler.auto){
             if(this.stream.dialog.finished){
@@ -134,6 +183,9 @@ class GlobalHandler extends GameObject{
             };
         })
     }
+    next(){
+        this.stream.next();
+    }
     destroy(){
         super._destroy();
     }
@@ -150,20 +202,31 @@ class BGMHandler{
         ease: ease,
         ease2: ease2,
         ease3: ease3,
+        baka: baka,
+        danger: danger,
+        train: train,
+        sweet: sweet,
+        fight: fight,
+        reality: reality
     }
     constructor(){}
     static change(bgm){
         bgm = typeof(bgm) == "string" ? BGMHandler.table[bgm] : bgm;
+        if(BGMHandler.cur_bgm == bgm){
+            return;
+        }
         if(BGMHandler.cur_bgm){
-            BGMHandler.cur_bgm.pause();
-            BGMHandler.cur_bgm.currentTime = 0.0;   
+            new easeOut(BGMHandler.cur_bgm);
         }
         BGMHandler.cur_bgm = bgm;
         if(BGMHandler.cur_bgm){
-            BGMHandler.cur_bgm.play();
+            new easeIn(BGMHandler.cur_bgm);
         }
     }
     static get bgm(){
+        if(!BGMHandler.cur_bgm){
+            return null;
+        }
         return Object.keys(BGMHandler.table).find((key)=>{
             return BGMHandler.table[key] === BGMHandler.cur_bgm;
         })
@@ -201,7 +264,11 @@ function AssetsInit(){
             load_confirm = new Confirm(sheet.button2, "读取此存档吗？");
             exit_confirm = new Confirm(sheet.button2, "退出到主界面吗？");
         }),
-        script.then((script)=>{handler = new GlobalHandler(script, dialog);}),
+        script.then(
+            (script)=>{handler = new GlobalHandler(script, dialog);}
+        ).catch((err)=>{
+            handler = new GlobalHandler({}, dialog);
+        }),
         bplayer.jump(0.5),
         bplayer.pause(),
         bplayer.danmaku(false)
@@ -410,7 +477,6 @@ function SavingInit(){
                     status.then((status)=>{
                         saving.blocks[i].status = status;
                         saving.blocks[i].save(status["cur_name"], status["cur_text"]);
-                        console.log(saving.savings);
                         bpfile.write("/save/savings.json", _S(saving.savings));
                         app.stage.removeChildAt(app.stage.children.length - 1);
                         saving.disabled = false;
@@ -446,18 +512,18 @@ function BeginInit(){
     begin.start.onclick = ()=>{
         let frame = new VideoNextFrame(1.1, 0);
         GlobalHandler.stop = false;
-        BGMHandler.change(normal);
+        BGMHandler.change(null);
         begin.disabled = true;
         begin.grid.alpha = 0.0;
         dialog.grid.scale.y = 0.0;
         buttons.grid.scale.y = 0.0;
-        let animator = new Show2(dialog, buttons);
+        // let animator = new Show2(dialog, buttons);
         buttons.disabled = false;
         reset();
-        handler.stream.next();
+        handler.next();
     }
     begin.exit.onclick = ()=>{
-        bplayer.fullscreen().then(exit);
+        bplayer.fullscreen(false).then(exit);
     };
     begin.load.onclick = ()=>{
         SavingInterface.mode = "load";

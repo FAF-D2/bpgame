@@ -64,10 +64,6 @@ const UIJSON2 = {
         scale: 1
     }
 }
-const UISheet = new PIXI.Spritesheet(
-    PIXI.BaseTexture.from(UIJSON.meta.image),
-    UIJSON
-)
 const sheet = new PIXI.Spritesheet(PIXI.BaseTexture.from(UIJSON.meta.image), UIJSON).parse()
 const sheet2 = new PIXI.Spritesheet(PIXI.BaseTexture.from(UIJSON2.meta.image), UIJSON2).parse();
 const letter = PIXI.Texture.from("./img/saving.png");
@@ -97,7 +93,7 @@ const button_click = SEinit("button_click.mp3");
 function BGMInit(url){
     let bgm = new Audio("./audio/bgm/" + url);
     bgm.loop = true;
-    bgm.volume = 0.5;
+    bgm.volume = 0.35;
     return bgm;
 }
 const lucky = BGMInit("lucky.mp3");
@@ -108,6 +104,12 @@ const grey = BGMInit("grey.mp3");
 const ease = BGMInit("ease.mp3");
 const ease2 = BGMInit("ease2.mp3");
 const ease3 = BGMInit("ease3.mp3");
+const danger = BGMInit("dangerous.mp3");
+const baka = BGMInit("baka.mp3");
+const train = BGMInit("train.mp3");
+const sweet = BGMInit("sweet.mp3");
+const fight = BGMInit("fight.mp3");
+const reality = BGMInit("reality.mp3");
 
 const app = new PIXI.Application({
     width: window.innerWidth / 2,

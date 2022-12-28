@@ -13,8 +13,8 @@ class Dialog{
     constructor(){
         // dialog
         let style = GetTextStyle();
-        this.player = new BPTextPlayer(0, 10, 
-            app.screen.width - 250, app.screen.height * 0.28, 17, style);
+        this.player = new BPTextPlayer(50, 10, 
+            app.screen.width - 350, app.screen.height * 0.28, 17, style);
         this.back = emptySprite(0, 0, app.screen.width, app.screen.height * 0.28);
         this.back.filters = [
             gradientShader.get_filter(0, 0, 0, 0.8, 0, 1.0, 0)
@@ -22,11 +22,11 @@ class Dialog{
 
         // naming
         style.fontSize = 18;
-        this.name_player = new BPTextPlayer( - app.screen.width * 0.38, -app.screen.height * 0.2 - 1, 
+        this.name_player = new BPTextPlayer(- app.screen.width * 0.25, -app.screen.height * 0.165 - 1, 
         100, 22, 1, style);
-        this.name_back = emptySprite(50 - app.screen.width / 2, -app.screen.height * 0.2, 100, 22);
+        this.name_back = emptySprite( - app.screen.width * 0.3, -app.screen.height * 0.165, 100, 22);
         this.name_back.filters = [
-            gradientShader.get_filter(0.0, 0.0, 0.0, 0.4, 0.1, -0.1, -0.2)
+            gradientShader.get_filter(0.2, 0.2, 0.2, 0.8, 0.1, 0.3, -0.2)
         ];
         
         //grid

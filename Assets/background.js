@@ -16,17 +16,17 @@ function remove_package(bvid, sendResponse){
 }
 
 
-var IOPort;
-const ws = {};
+let IOPort = null;
+let _port = '0';
 function init_websocket(game_name, sendResponse){
-    if(ws[game_name]){
-        sendResponse(ws[game_name]);
+    if(_port != '0'){
+        sendResponse(_port);
     }
     if(!IOPort){
         let _onmessage = function(port){
             IOPort.onMessage.removeListener(_onmessage);
             IOPort.onMessage.removeListener(_ondisconnect);
-            ws[game_name] = port;
+            _port = port;
             sendResponse(port);
         }
         let _ondisconnect = function(){
@@ -40,7 +40,6 @@ function init_websocket(game_name, sendResponse){
         IOPort.onDisconnect.addListener(_ondisconnect);
         IOPort.onDisconnect.addListener(()=>{
             IOPort = null;
-            delete ws[game_name];
         });
     }
     IOPort.postMessage(game_name);
